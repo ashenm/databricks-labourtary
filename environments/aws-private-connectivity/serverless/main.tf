@@ -68,6 +68,11 @@ data "aws_resourcegroupstaggingapi_resources" "buckets" {
     key    = "Environment"
     values = [upper(var.environment)]
   }
+
+  tag_filter {
+    key    = "Tier"
+    values = ["Data"]
+  }
 }
 
 data "aws_partition" "current" {}

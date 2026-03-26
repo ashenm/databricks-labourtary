@@ -2,6 +2,7 @@ resource "aws_s3_bucket" "storages" {
   for_each      = var.storages
   bucket        = local.storage_bucket_names[each.key]
   force_destroy = each.value.force_destroy
+  tags          = { Tier = "Data" }
 }
 
 resource "aws_s3_bucket_versioning" "storages" {

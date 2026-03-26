@@ -5,6 +5,10 @@ resource "aws_s3_bucket" "databricks" {
   lifecycle {
     ignore_changes = [tags.Owner]
   }
+
+  tags = {
+    Tier = "Metadata"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "databricks" {

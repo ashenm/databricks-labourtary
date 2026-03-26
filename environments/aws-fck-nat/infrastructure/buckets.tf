@@ -1,6 +1,7 @@
 resource "aws_s3_bucket" "databricks" {
   bucket        = lower("${var.name_prefix}-databricks")
   force_destroy = true
+  tags          = { Tier = "Metadata" }
 }
 
 resource "aws_s3_bucket_public_access_block" "databricks" {

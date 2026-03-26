@@ -12,5 +12,6 @@ variable "catalogs" {
       group      = string
       privileges = list(string)
     })))
+    owner = optional(string, null)
   }))
 }

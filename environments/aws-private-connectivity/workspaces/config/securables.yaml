@@ -12,6 +12,7 @@ catalogs:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+    owner: one-env-laboratory-sudoers
   triangulum:
     name: triangulum
     force_destroy: true
@@ -19,6 +20,7 @@ catalogs:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+    owner: one-env-laboratory-sudoers
 
 schemas:
   main:
@@ -27,12 +29,14 @@ schemas:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+    owner: one-env-laboratory-sudoers
   stars:
     catalog_name: triangulum
     force_destroy: true
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+    owner: one-env-laboratory-sudoers
 
 volumes:
   cloudwatch:
@@ -42,3 +46,4 @@ volumes:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+    owner: one-env-laboratory-sudoers

@@ -3,6 +3,7 @@ resource "databricks_catalog" "catalogs" {
   name           = lower(coalesce(each.value.name, replace(join("-", compact([var.name_prefix, each.key])), "-", "_")))
   storage_root   = each.value.storage_root
   isolation_mode = "ISOLATED"
+  owner          = each.value.owner
 }
 
 resource "databricks_grants" "catalogs" {

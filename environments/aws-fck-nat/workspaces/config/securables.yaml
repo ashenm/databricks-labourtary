@@ -10,18 +10,22 @@ catalogs:
     storage: starscream
     force_destroy: true
     permissions: []
+    owner: one-env-laboratory-sudoers
   kepler:
     name: kepler
     storage: kepler
     force_destroy: true
     permissions: []
+    owner: one-env-laboratory-sudoers
 
 schemas:
   main:
     catalog_name: kepler
     force_destroy: true
     permissions: []
+    owner: one-env-laboratory-sudoers
   stars:
     catalog_name: kepler
     force_destroy: true
     permissions: []
+    owner: one-env-laboratory-sudoers

@@ -7,5 +7,6 @@ variable "schemas" {
       group      = string
       privileges = list(string)
     })))
+    owner = optional(string, null)
   }))
 }

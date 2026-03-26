@@ -9,6 +9,16 @@ locals {
   clusters = { for key, value in lookup(local.configs, "clusters", {}) : key => merge(value, {
     instance_profile_arn = lookup(value, "instance_profile", null) != null ? module.instance_profiles.instance_profiles[value.instance_profile].id : null
     ssh_public_keys      = [local.vault["sudoers-public-key-openssh"]]
+    init_scripts = concat(lookup(value, "init_scripts", []), [
+      {
+        type        = "volume"
+        destination = module.cloudwatch.agent.scripts["install.sh"].path
+      }
+    ])
+    spark_env_vars = merge(lookup(value, "spark_env_vars", {}), {
+      CLOUDWATCH_INSTALLER_TYPE      = "offline"
+      CLOUDWATCH_INSTALLER_DIRECTORY = module.volumes.volumes["cloudwatch"].volume_path
+    })
   }) }
 
   instance_profile_policies = {
@@ -57,6 +67,16 @@ module "volumes" {
   source     = "../../../modules/volumes"
   volumes    = lookup(local.configs, "volumes", {})
   depends_on = [module.schemas]
+}
+
+module "cloudwatch" {
+  source = "../../../modules/cloudwatch"
+  agent = {
+    artifacts = {
+      volume_path = module.volumes.volumes["cloudwatch"].volume_path
+    }
+  }
+  depends_on = [module.volumes]
 }
 
 module "instance_profiles" {

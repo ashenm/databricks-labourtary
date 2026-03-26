@@ -108,3 +108,27 @@ resource "databricks_disable_legacy_access_setting" "main" {
     value = true
   }
 }
+
+resource "databricks_artifact_allowlist" "init" {
+  artifact_type = "INIT_SCRIPT"
+
+  dynamic "artifact_matcher" {
+    for_each = jsondecode(data.external.artifact_allowlist_matchers.result.matchers)
+
+    content {
+      artifact   = artifact_matcher.value.artifact
+      match_type = artifact_matcher.value.match_type
+    }
+  }
+}
+
+data "external" "artifact_allowlist_matchers" {
+  program = ["python3", "${path.module}/../../../externals/get-artifact-allowlist.py"]
+  query = {
+    host   = data.databricks_current_user.current.workspace_url
+    prefix = dirname(module.volumes.volumes["cloudwatch"].volume_path)
+    paths  = jsonencode([module.volumes.volumes["cloudwatch"].volume_path])
+  }
+}
+
+data "databricks_current_user" "current" {}

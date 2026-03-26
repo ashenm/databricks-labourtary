@@ -39,6 +39,11 @@ locals {
       namespace           = "kinesis"
       private_dns_enabled = false
     }
+    logs = {
+      provider            = "aws"
+      namespace           = "logs"
+      private_dns_enabled = false
+    }
     monitoring = {
       provider            = "aws"
       namespace           = "monitoring"

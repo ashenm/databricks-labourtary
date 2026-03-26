@@ -91,6 +91,12 @@ module "clusters" {
   name_prefix = var.name_prefix
 }
 
+resource "databricks_workspace_conf" "main" {
+  custom_config = {
+    enableTokensConfig = "false"
+  }
+}
+
 resource "databricks_default_namespace_setting" "main" {
   namespace {
     value = module.catalogs.catalogs["main"].name

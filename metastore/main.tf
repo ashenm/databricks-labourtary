@@ -17,6 +17,10 @@ resource "databricks_metastore" "main" {
   force_destroy = true
   region        = var.aws_region
 
+  delta_sharing_scope                               = "INTERNAL_AND_EXTERNAL"
+  delta_sharing_recipient_token_lifetime_in_seconds = 2592000
+  delta_sharing_organization_name                   = "one-env-laboratory"
+
   lifecycle {
     ignore_changes = [owner]
   }

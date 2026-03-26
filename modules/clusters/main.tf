@@ -7,12 +7,33 @@ resource "databricks_cluster" "clusters" {
   node_type_id        = coalesce(each.value.node_type_id, data.databricks_node_type.smallest.id)
   driver_node_type_id = each.value.driver_node_type_id
   data_security_mode  = coalesce(each.value.data_security_mode, "USER_ISOLATION")
+  spark_env_vars      = coalesce(each.value.spark_env_vars, {})
   single_user_name    = each.value.single_user_name
   ssh_public_keys     = each.value.ssh_public_keys
 
   autoscale {
     min_workers = coalesce(each.value.autoscale_min_workers, 1)
     max_workers = coalesce(each.value.autoscale_max_workers, 1)
+  }
+
+  dynamic "init_scripts" {
+    for_each = toset([for script in each.value.init_scripts : script.destination if script.type == "volume"])
+
+    content {
+      volumes {
+        destination = init_scripts.key
+      }
+    }
+  }
+
+  dynamic "init_scripts" {
+    for_each = toset([for script in each.value.init_scripts : script.destination if script.type == "workspace"])
+
+    content {
+      workspace {
+        destination = init_scripts.key
+      }
+    }
   }
 
   aws_attributes {

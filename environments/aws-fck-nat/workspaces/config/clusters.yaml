@@ -1,0 +1,13 @@
+clusters:
+  common:
+    autotermination_minutes: 120
+    init_scripts:
+      - type: volume
+        destination: /Volumes/kepler/main/probes/init.sh
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privilege: CAN_MANAGE
+    instance_profile: default
+    data_security_mode: USER_ISOLATION
+    single_user_name: one-env-laboratory-sudoers
+    no_wait: true

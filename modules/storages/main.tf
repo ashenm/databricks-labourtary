@@ -24,7 +24,7 @@ resource "databricks_external_location" "storages" {
 
   encryption_details {
     sse_encryption_details {
-      algorithm       = "AWS_SSE_S3"
+      algorithm       = "AWS_SSE_KMS"
       aws_kms_key_arn = aws_kms_alias.storages[each.key].arn
     }
   }

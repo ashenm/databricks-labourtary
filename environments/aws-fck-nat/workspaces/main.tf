@@ -39,6 +39,22 @@ module "clusters" {
   depends_on  = [databricks_artifact_allowlist.init]
 }
 
+resource "databricks_workspace_conf" "main" {
+  custom_config = {
+    enableTokensConfig   = "true"
+    maxTokenLifetimeDays = "360"
+  }
+}
+
+resource "databricks_permissions" "tokens" {
+  authorization = "tokens"
+
+  access_control {
+    group_name       = "one-env-laboratory-sudoers"
+    permission_level = "CAN_USE"
+  }
+}
+
 resource "databricks_default_namespace_setting" "main" {
   namespace {
     value = module.catalogs.catalogs["main"].name

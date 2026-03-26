@@ -6,6 +6,10 @@ resource "databricks_mws_workspaces" "main" {
   storage_configuration_id = databricks_mws_storage_configurations.main.storage_configuration_id
   credentials_id           = databricks_mws_credentials.main.credentials_id
   deployment_name          = var.project_name
+
+  # create placeholder token to allow token privilege customizations
+  # environments/aws-private-connectivity/workspaces/main.tf
+  token {}
 }
 
 resource "databricks_metastore_assignment" "main" {

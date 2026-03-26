@@ -29,3 +29,19 @@ schemas:
     force_destroy: true
     permissions: []
     owner: one-env-laboratory-sudoers
+
+volumes:
+  probes:
+    catalog_name: kepler
+    schema_name: main
+    force_destroy: true
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privileges: [ALL_PRIVILEGES]
+  rovers:
+    catalog_name: kepler
+    schema_name: main
+    force_destroy: true
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privileges: [ALL_PRIVILEGES]

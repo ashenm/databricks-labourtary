@@ -26,6 +26,12 @@ module "schemas" {
   depends_on = [module.catalogs]
 }
 
+module "volumes" {
+  source     = "../../../modules/volumes"
+  volumes    = lookup(local.configs, "volumes", {})
+  depends_on = [module.schemas]
+}
+
 resource "databricks_default_namespace_setting" "main" {
   namespace {
     value = module.catalogs.catalogs["main"].name

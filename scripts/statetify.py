@@ -52,7 +52,10 @@ def main(filepath: str) -> None:
     with open(file=filepath, mode="w") as stream:
         stream.write(json.dumps({**state, "resources": retains}))
 
-    clean_storage_contents(resources=[resource for resource in retains if is_aws_s3_bucket(resource=resource)])
+    try:
+        clean_storage_contents(resources=[resource for resource in retains if is_aws_s3_bucket(resource=resource)])
+    except boto3.client("s3").exceptions.NoSuchBucket:
+        pass
 
 
 def clean_storage_contents(resources: list[dict]) -> None:

@@ -1,5 +1,6 @@
 locals {
-  aws_vpc_id = data.aws_vpc.main.id
+  app_service_name = "api.example.com"
+  aws_vpc_id       = data.aws_vpc.main.id
 }
 
 resource "databricks_mws_network_connectivity_config" "main" {
@@ -15,7 +16,7 @@ resource "databricks_mws_network_connectivity_config" "main" {
 
 resource "databricks_mws_ncc_private_endpoint_rule" "apis" {
   network_connectivity_config_id = databricks_mws_network_connectivity_config.main.network_connectivity_config_id
-  domain_names                   = ["api.example.com"]
+  domain_names                   = [local.app_service_name]
   endpoint_service               = aws_vpc_endpoint_service.main.service_name
   depends_on                     = [time_sleep.main]
 }
@@ -35,6 +36,32 @@ resource "databricks_mws_ncc_private_endpoint_rule" "main" {
   endpoint_service               = "com.amazonaws.ap-southeast-1.s3"
   network_connectivity_config_id = databricks_mws_network_connectivity_config.main.network_connectivity_config_id
   resource_names                 = [for resource in data.aws_resourcegroupstaggingapi_resources.buckets.resource_tag_mapping_list : replace(resource.resource_arn, "arn:aws:s3:::", "")]
+}
+
+resource "databricks_account_network_policy" "main" {
+  network_policy_id = lower(var.name_prefix)
+  account_id        = var.databricks_account_id
+
+  egress = {
+    network_access = {
+      restriction_mode = "RESTRICTED_ACCESS"
+      allowed_internet_destinations = [
+        {
+          destination               = local.app_service_name
+          internet_destination_type = "DNS_NAME"
+        }
+      ]
+      allowed_storage_destinations = []
+      policy_enforcement = {
+        enforcement_mode = "ENFORCED"
+      }
+    }
+  }
+}
+
+resource "databricks_workspace_network_option" "main" {
+  workspace_id      = var.databricks_workspace_id
+  network_policy_id = databricks_account_network_policy.main.network_policy_id
 }
 
 resource "databricks_mws_ncc_binding" "main" {

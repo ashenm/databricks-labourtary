@@ -1,3 +1,7 @@
+variable "databricks_account_id" {
+  type = string
+}
+
 variable "databricks_workspace_id" {
   type = string
 }

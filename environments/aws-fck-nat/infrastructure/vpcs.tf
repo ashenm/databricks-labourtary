@@ -19,6 +19,17 @@ resource "aws_vpc" "main" {
   tags                 = { Name = upper(var.name_prefix) }
 }
 
+resource "aws_flow_log" "vpc" {
+  iam_role_arn    = aws_iam_role.vpc.arn
+  log_destination = aws_cloudwatch_log_group.vpc.arn
+  traffic_type    = "ALL"
+  vpc_id          = aws_vpc.main.id
+}
+
+resource "aws_cloudwatch_log_group" "vpc" {
+  name = "/aws/vpc/${upper(var.name_prefix)}"
+}
+
 data "aws_availability_zones" "available_zones" {
   state = "available"
 }

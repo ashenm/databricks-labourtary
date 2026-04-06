@@ -20,6 +20,17 @@ resource "aws_iam_role_policy_attachment" "fck-nat" {
   policy_arn = data.aws_iam_policy.ssm.arn
 }
 
+resource "aws_iam_role" "vpc" {
+  name               = upper("${var.name_prefix}-VPC")
+  assume_role_policy = data.aws_iam_policy_document.vpc.json
+}
+
+resource "aws_iam_role_policy" "vpc" {
+  name   = "CloudWatch"
+  role   = aws_iam_role.vpc.id
+  policy = data.aws_iam_policy_document.cloudwatch.json
+}
+
 data "aws_iam_policy" "ssm" {
   name = "AmazonSSMFullAccess"
 }

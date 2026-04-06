@@ -12,7 +12,14 @@ from shutil import copyfile
 from argparse import ArgumentParser, Namespace
 
 
-DATABRICKS_AUTOMATION_CLEANUP_EXCEPTIONS: list[str] = ["databricks_metastore", "databricks_mws_credentials"]
+DATABRICKS_AUTOMATION_CLEANUP_EXCEPTIONS: list[str] = [
+    "databricks_metastore",
+    "databricks_mws_credentials",
+]
+
+
+def is_data_source(resource: dict) -> bool:
+    return resource["mode"] == "data"
 
 
 def is_databricks_resource(resource: dict) -> bool:
@@ -27,13 +34,23 @@ def is_aws_s3_bucket(resource: dict) -> bool:
     return resource["type"] == "aws_s3_bucket"
 
 
+def is_aws_vpc_endpoint_service(resource: dict) -> bool:
+    return resource["type"] == "aws_vpc_endpoint_service"
+
+
 def is_leftover_databricks_resource(resource: dict) -> bool:
     resource_type: str = resource["type"]
     return resource_type.startswith("databricks_") and resource_type not in DATABRICKS_AUTOMATION_CLEANUP_EXCEPTIONS
 
 
 def is_leftover_resource(resource: dict) -> bool:
-    return not is_leftover_databricks_resource(resource=resource) and not is_aws_route53_zone(resource=resource)
+    return all(
+        [
+            not is_data_source(resource=resource),
+            not is_leftover_databricks_resource(resource=resource),
+            not is_aws_route53_zone(resource=resource),
+        ]
+    )
 
 
 def main(filepath: str) -> None:
@@ -57,6 +74,8 @@ def main(filepath: str) -> None:
     except boto3.client("s3").exceptions.NoSuchBucket:
         pass
 
+    clean_vpc_endpoint_services(resources=list(filter(is_aws_vpc_endpoint_service, retains)))
+
 
 def clean_storage_contents(resources: list[dict]) -> None:
     print(f"Cleaning up contents of {len(resources)} storage roots(s)")
@@ -64,6 +83,27 @@ def clean_storage_contents(resources: list[dict]) -> None:
     for resource in resources:
         for instance in resource["instances"]:
             s3.Bucket(instance["attributes"]["bucket"]).objects.all().delete()
+
+
+def clean_vpc_endpoint_service_connections(client: Session, instance: dict) -> None:
+    response: dict = client.describe_vpc_endpoint_connections(
+        Filters=[{"Name": "service-id", "Values": [instance["attributes"]["id"]]}]
+    )
+
+    if not len(response["VpcEndpointConnections"]):
+        return
+
+    subscriptions: list[str] = [endpoint["VpcEndpointId"] for endpoint in response["VpcEndpointConnections"]]
+    print(f"Cleaning service connections of {len(subscriptions)} on {instance['attributes']['id']}")
+    client.reject_vpc_endpoint_connections(ServiceId=instance["attributes"]["id"], VpcEndpointIds=subscriptions)
+
+
+def clean_vpc_endpoint_services(resources: list[dict]) -> None:
+    print(f"Cleaning service connections of {len(resources)} VPC Endpoint(s)")
+    ec2: Session = boto3.client("ec2")
+    for resource in resources:
+        for instance in resource["instances"]:
+            clean_vpc_endpoint_service_connections(client=ec2, instance=instance)
 
 
 def get_arguments_parser() -> ArgumentParser:

@@ -61,6 +61,9 @@ def main(filepath: str) -> None:
     with open(file=filepath, mode="r") as stream:
         state = json.load(fp=stream)
 
+    if state["version"] != 4:
+        raise RuntimeError(f"Incompatible state file version {state["version"]}")
+
     retains: list[dict] = [resource for resource in state["resources"] if is_leftover_resource(resource=resource)]
     removals: int = len(state["resources"]) - len(retains)
 

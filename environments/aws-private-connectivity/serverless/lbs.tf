@@ -39,7 +39,7 @@ resource "aws_lb_target_group" "tcp_80" {
   target_type = "alb"
   port        = 80
   protocol    = "TCP"
-  vpc_id      = data.aws_vpc.main.id
+  vpc_id      = local.aws_vpc_id
 }
 
 resource "aws_lb_target_group" "tcp_443" {
@@ -47,7 +47,7 @@ resource "aws_lb_target_group" "tcp_443" {
   target_type = "alb"
   port        = 80
   protocol    = "TCP"
-  vpc_id      = data.aws_vpc.main.id
+  vpc_id      = local.aws_vpc_id
 }
 
 resource "aws_lb_listener" "tcp_80" {

@@ -1,3 +1,7 @@
+locals {
+  aws_vpc_id = data.aws_vpc.main.id
+}
+
 resource "databricks_mws_network_connectivity_config" "main" {
   #
   # TEMP
@@ -42,7 +46,7 @@ resource "databricks_mws_ncc_binding" "main" {
 data "aws_subnets" "dmz" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.main.id]
+    values = [local.aws_vpc_id]
   }
 
   tags = { Tier = "DMZ" }

@@ -1,6 +1,6 @@
 resource "aws_security_group" "nlb" {
   name   = upper("${var.name_prefix}-nlb")
-  vpc_id = data.aws_vpc.main.id
+  vpc_id = local.aws_vpc_id
 
   egress {
     from_port        = 0
@@ -15,7 +15,7 @@ resource "aws_security_group" "nlb" {
 
 resource "aws_security_group" "alb" {
   name   = upper("${var.name_prefix}-alb")
-  vpc_id = data.aws_vpc.main.id
+  vpc_id = local.aws_vpc_id
 
   ingress {
     from_port       = 0

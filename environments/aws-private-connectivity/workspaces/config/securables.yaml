@@ -12,6 +12,8 @@ catalogs:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_CATALOG]
     owner: one-env-laboratory-sudoers
   triangulum:
     name: triangulum
@@ -20,6 +22,8 @@ catalogs:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_CATALOG]
     owner: one-env-laboratory-sudoers
 
 schemas:
@@ -29,6 +33,8 @@ schemas:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_SCHEMA, SELECT]
     owner: one-env-laboratory-sudoers
   stars:
     catalog_name: triangulum
@@ -36,6 +42,8 @@ schemas:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_SCHEMA, SELECT]
     owner: one-env-laboratory-sudoers
 
 volumes:
@@ -46,4 +54,6 @@ volumes:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [READ_VOLUME]
     owner: one-env-laboratory-sudoers

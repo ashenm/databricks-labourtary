@@ -9,25 +9,41 @@ catalogs:
     name: starscream
     storage: starscream
     force_destroy: true
-    permissions: []
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_CATALOG]
     owner: one-env-laboratory-sudoers
   kepler:
     name: kepler
     storage: kepler
     force_destroy: true
-    permissions: []
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_CATALOG]
     owner: one-env-laboratory-sudoers
 
 schemas:
   main:
     catalog_name: kepler
     force_destroy: true
-    permissions: []
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_SCHEMA, SELECT]
     owner: one-env-laboratory-sudoers
   stars:
     catalog_name: kepler
     force_destroy: true
-    permissions: []
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_SCHEMA, SELECT]
     owner: one-env-laboratory-sudoers
 
 volumes:
@@ -38,6 +54,9 @@ volumes:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [READ_VOLUME]
+    owner: one-env-laboratory-sudoers
   rovers:
     catalog_name: kepler
     schema_name: main
@@ -45,3 +64,6 @@ volumes:
     permissions:
       - group: one-env-laboratory-sudoers
         privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [READ_VOLUME]
+    owner: one-env-laboratory-sudoers

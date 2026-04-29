@@ -49,8 +49,19 @@ resource "databricks_mws_permission_assignment" "sudoers" {
   depends_on   = [databricks_metastore_assignment.main]
 }
 
+resource "databricks_mws_permission_assignment" "readers" {
+  workspace_id = databricks_mws_workspaces.main.workspace_id
+  principal_id = data.databricks_group.readers.id
+  permissions  = ["USER"]
+  depends_on   = [databricks_metastore_assignment.main]
+}
+
 data "databricks_group" "sudoers" {
   display_name = "one-env-laboratory-sudoers"
+}
+
+data "databricks_group" "readers" {
+  display_name = "one-env-laboratory-readers"
 }
 
 data "databricks_aws_assume_role_policy" "main" {

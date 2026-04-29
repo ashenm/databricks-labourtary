@@ -7,6 +7,8 @@ clusters:
     permissions:
       - group: one-env-laboratory-sudoers
         privilege: CAN_MANAGE
+      - group: one-env-laboratory-readers
+        privilege: CAN_RESTART
     instance_profile: default
     data_security_mode: USER_ISOLATION
     single_user_name: one-env-laboratory-sudoers

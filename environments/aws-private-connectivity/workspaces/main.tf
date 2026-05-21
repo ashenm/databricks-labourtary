@@ -93,7 +93,7 @@ module "clusters" {
 
 resource "databricks_workspace_conf" "main" {
   custom_config = {
-    enableTokensConfig  = "false"
+    enableTokensConfig  = "true"
     enableIpAccessLists = "false"
   }
 }

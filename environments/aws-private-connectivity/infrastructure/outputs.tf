@@ -1,3 +1,7 @@
+output "aws_vpc_id" {
+  value = aws_vpc.main.id
+}
+
 output "workspace_id" {
   value = databricks_mws_workspaces.main.workspace_id
 }

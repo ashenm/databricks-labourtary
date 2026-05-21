@@ -44,6 +44,7 @@ module "workspaces" {
 module "serverless" {
   source                  = "./serverless"
   name_prefix             = local.name_prefix
+  aws_vpc_id              = module.infrastructure.aws_vpc_id
   databricks_account_id   = var.databricks_account_id
   databricks_workspace_id = module.infrastructure.workspace_id
   project_name            = var.project

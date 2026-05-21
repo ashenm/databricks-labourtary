@@ -1,3 +1,7 @@
+variable "aws_vpc_id" {
+  type = string
+}
+
 variable "databricks_account_id" {
   type = string
 }

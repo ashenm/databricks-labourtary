@@ -82,6 +82,7 @@ data "aws_subnets" "dmz" {
 }
 
 data "aws_vpc" "main" {
+  id = var.aws_vpc_id
   tags = {
     Name        = upper(var.name_prefix)
     Environment = upper(var.environment)

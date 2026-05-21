@@ -30,6 +30,18 @@ def is_aws_route53_zone(resource: dict) -> bool:
     return resource["type"] == "aws_route53_zone"
 
 
+def is_aws_lb_target_group(resource: dict) -> bool:
+    return resource["type"] in ("aws_lb_target_group", "aws_alb_target_group")
+
+
+def is_aws_lb_target_group_attachment(resource: dict) -> bool:
+    return resource["type"] in ("aws_lb_target_group_attachment", "aws_alb_target_group_attachment")
+
+
+def is_aws_listener(resource: dict) -> bool:
+    return resource["type"] in ("aws_lb_listener", "aws_alb_listener")
+
+
 def is_aws_s3_bucket(resource: dict) -> bool:
     return resource["type"] == "aws_s3_bucket"
 
@@ -44,11 +56,17 @@ def is_leftover_databricks_resource(resource: dict) -> bool:
 
 
 def is_leftover_resource(resource: dict) -> bool:
+    """
+    Determines if resource require manual destroy due to cleanup automation omission
+    """
     return all(
         [
             not is_data_source(resource=resource),
             not is_leftover_databricks_resource(resource=resource),
             not is_aws_route53_zone(resource=resource),
+            not is_aws_lb_target_group(resource=resource),
+            not is_aws_lb_target_group_attachment(resource=resource),
+            not is_aws_listener(resource=resource),
         ]
     )
 
@@ -92,11 +110,12 @@ def clean_vpc_endpoint_service_connections(client: Session, instance: dict) -> N
     response: dict = client.describe_vpc_endpoint_connections(
         Filters=[{"Name": "service-id", "Values": [instance["attributes"]["id"]]}]
     )
+    actives: list = [cnx for cnx in response["VpcEndpointConnections"] if cnx["VpcEndpointState"] == "available"]
 
-    if not len(response["VpcEndpointConnections"]):
+    if not len(actives):
         return
 
-    subscriptions: list[str] = [endpoint["VpcEndpointId"] for endpoint in response["VpcEndpointConnections"]]
+    subscriptions: list[str] = [endpoint["VpcEndpointId"] for endpoint in actives]
     print(f"Cleaning service connections of {len(subscriptions)} on {instance['attributes']['id']}")
     client.reject_vpc_endpoint_connections(ServiceId=instance["attributes"]["id"], VpcEndpointIds=subscriptions)
 

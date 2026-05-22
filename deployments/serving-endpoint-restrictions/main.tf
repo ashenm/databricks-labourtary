@@ -22,6 +22,12 @@ resource "databricks_job" "main" {
         "PYTHONPATH" = databricks_directory.automations.path
       }
 
+      init_scripts {
+        workspace {
+          destination = databricks_workspace_file.scripts["scripts/bootstrap.sh"].path
+        }
+      }
+
       data_security_mode = "SINGLE_USER"
       node_type_id       = data.databricks_node_type.smallest.id
     }

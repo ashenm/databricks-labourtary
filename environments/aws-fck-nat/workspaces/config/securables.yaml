@@ -14,6 +14,8 @@ catalogs:
         privileges: [ALL_PRIVILEGES]
       - group: one-env-laboratory-readers
         privileges: [USE_CATALOG]
+    tags:
+      Unit: aws-fck-nat
     owner: one-env-laboratory-sudoers
   kepler:
     name: kepler
@@ -24,6 +26,8 @@ catalogs:
         privileges: [ALL_PRIVILEGES]
       - group: one-env-laboratory-readers
         privileges: [USE_CATALOG]
+    tags:
+      Unit: aws-fck-nat
     owner: one-env-laboratory-sudoers
 
 schemas:

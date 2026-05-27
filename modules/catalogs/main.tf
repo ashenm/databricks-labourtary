@@ -1,3 +1,11 @@
+locals {
+  tags = merge([for key, catalog in var.catalogs : { for name, value in catalog.tags : join("-", [key, name]) => {
+    key   = key
+    name  = name
+    value = value
+  } }]...)
+}
+
 resource "databricks_catalog" "catalogs" {
   for_each       = var.catalogs
   name           = lower(coalesce(each.value.name, replace(join("-", compact([var.name_prefix, each.key])), "-", "_")))
@@ -18,6 +26,14 @@ resource "databricks_grants" "catalogs" {
       privileges = grant.value.privileges
     }
   }
+}
+
+resource "databricks_entity_tag_assignment" "catalogs" {
+  for_each    = local.tags
+  entity_type = "catalogs"
+  entity_name = databricks_catalog.catalogs[each.value.key].name
+  tag_key     = each.value.name
+  tag_value   = each.value.value
 }
 
 data "databricks_group" "catalogs" {

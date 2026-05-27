@@ -12,6 +12,7 @@ variable "catalogs" {
       group      = string
       privileges = list(string)
     })))
+    tags  = optional(map(string), {})
     owner = optional(string, null)
   }))
 }

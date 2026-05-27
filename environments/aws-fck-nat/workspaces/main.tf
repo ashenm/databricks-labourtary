@@ -39,6 +39,11 @@ module "clusters" {
   depends_on  = [databricks_artifact_allowlist.init]
 }
 
+module "baselines" {
+  source           = "../../../modules/baselines"
+  cluster_policies = ["team", "user"]
+}
+
 resource "databricks_workspace_conf" "main" {
   custom_config = {
     enableTokensConfig   = "true"

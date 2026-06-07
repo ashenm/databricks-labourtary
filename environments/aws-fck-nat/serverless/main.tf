@@ -34,12 +34,7 @@ resource "databricks_account_network_policy" "main" {
 
   egress = {
     network_access = {
-      restriction_mode              = "RESTRICTED_ACCESS"
-      allowed_internet_destinations = []
-      allowed_storage_destinations  = []
-      policy_enforcement = {
-        enforcement_mode = "ENFORCED"
-      }
+      restriction_mode = "FULL_ACCESS"
     }
   }
 }

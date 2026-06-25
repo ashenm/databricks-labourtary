@@ -103,4 +103,8 @@ data "external" "artifact_allowlist_matchers" {
   depends_on = [module.volumes]
 }
 
+data "databricks_group" "users" {
+  display_name = "users"
+}
+
 data "databricks_current_user" "current" {}

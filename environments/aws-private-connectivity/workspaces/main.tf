@@ -132,4 +132,8 @@ data "external" "artifact_allowlist_matchers" {
   }
 }
 
+data "databricks_group" "users" {
+  display_name = "users"
+}
+
 data "databricks_current_user" "current" {}

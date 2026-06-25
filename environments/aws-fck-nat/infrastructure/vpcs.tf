@@ -32,4 +32,9 @@ resource "aws_cloudwatch_log_group" "vpc" {
 
 data "aws_availability_zones" "available_zones" {
   state = "available"
+
+  filter {
+    name   = "zone-type"
+    values = ["availability-zone"]
+  }
 }

@@ -30,4 +30,9 @@ resource "aws_flow_log" "main" {
 
 data "aws_availability_zones" "available_zones" {
   state = "available"
+
+  filter {
+    name   = "zone-type"
+    values = ["availability-zone"]
+  }
 }

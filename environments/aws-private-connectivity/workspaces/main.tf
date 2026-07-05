@@ -132,6 +132,14 @@ data "external" "artifact_allowlist_matchers" {
   }
 }
 
+data "databricks_group" "readers" {
+  display_name = "one-env-laboratory-readers"
+}
+
+data "databricks_group" "sudoers" {
+  display_name = "one-env-laboratory-sudoers"
+}
+
 data "databricks_group" "users" {
   display_name = "users"
 }

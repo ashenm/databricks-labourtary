@@ -16,3 +16,8 @@ clusters:
     data_security_mode: SINGLE_USER
     single_user_name: one-env-laboratory-sudoers
     no_wait: true
+
+warehouses:
+  common:
+    size: X-Small
+    no_wait: true

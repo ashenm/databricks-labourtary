@@ -25,6 +25,8 @@ locals {
     })
   }) }
 
+  warehouses = lookup(local.configs, "warehouses", {})
+
   instance_profile_policies = {
     cloudwatch_agent_serverpolicy = data.aws_iam_policy.cloudwatch_agent_serverpolicy.policy
   }
@@ -94,6 +96,12 @@ module "clusters" {
   clusters    = local.clusters
   name_prefix = var.name_prefix
   depends_on  = [databricks_artifact_allowlist.init, databricks_artifact_allowlist.jars]
+}
+
+module "warehouses" {
+  source      = "../../../modules/warehouses"
+  warehouses  = local.warehouses
+  name_prefix = var.name_prefix
 }
 
 module "baselines" {

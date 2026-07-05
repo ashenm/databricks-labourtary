@@ -10,6 +10,7 @@ resource "databricks_cluster" "clusters" {
   spark_env_vars      = coalesce(each.value.spark_env_vars, {})
   single_user_name    = each.value.single_user_name
   ssh_public_keys     = each.value.ssh_public_keys
+  is_pinned           = each.value.is_pinned
 
   autoscale {
     min_workers = coalesce(each.value.autoscale_min_workers, 1)

@@ -23,6 +23,11 @@ variable "clusters" {
     no_wait                 = optional(bool)
     instance_profile_arn    = optional(string)
     ssh_public_keys         = optional(list(string))
+
+    # set below to prevent automation cleanup due to inactivity
+    # https://docs.databricks.com/aws/en/compute/clusters-manage#terminate-a-compute
+    is_pinned = optional(bool, true)
+
     init_scripts = optional(list(object({
       type        = string # s3, volume, or workspace
       destination = string

@@ -1,5 +1,6 @@
 clusters:
   common:
+    node_type_id: m5dn.large
     autotermination_minutes: 120
     permissions:
       - group: one-env-laboratory-sudoers
@@ -9,6 +10,7 @@ clusters:
     single_user_name: one-env-laboratory-sudoers
     no_wait: true
   auxiliary:
+    node_type_id: m5dn.large
     autotermination_minutes: 120
     permissions:
       - group: one-env-laboratory-sudoers

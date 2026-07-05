@@ -5,7 +5,7 @@ resource "databricks_cluster" "clusters" {
   spark_version       = coalesce(each.value.spark_version, data.databricks_spark_version.lts.id)
   runtime_engine      = coalesce(each.value.runtime_engine, "STANDARD")
   node_type_id        = coalesce(each.value.node_type_id, data.databricks_node_type.smallest.id)
-  driver_node_type_id = each.value.driver_node_type_id
+  driver_node_type_id = coalesce(each.value.driver_node_type_id, each.value.node_type_id, data.databricks_node_type.smallest.id)
   data_security_mode  = coalesce(each.value.data_security_mode, "USER_ISOLATION")
   spark_env_vars      = coalesce(each.value.spark_env_vars, {})
   single_user_name    = each.value.single_user_name

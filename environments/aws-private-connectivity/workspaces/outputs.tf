@@ -1,0 +1,15 @@
+output "baselines" {
+  value = module.baselines
+}
+
+output "catalogs" {
+  value = module.catalogs
+}
+
+output "clusters" {
+  value = module.clusters
+}
+
+output "warehouses" {
+  value = module.warehouses
+}

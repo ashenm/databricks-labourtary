@@ -18,9 +18,26 @@ locals {
       maxValue     = 4
       isOptional   = true
     }
+    runtime_engine = {
+      type   = "fixed"
+      value  = "STANDARD"
+      hidden = true
+    }
     "docker_image.url" = {
       type   = "forbidden"
       hidden = true
+    }
+    "autoscale.min_workers" : {
+      type       = "range"
+      minValue   = 0
+      maxValue   = 4
+      isOptional = true
+    }
+    "autoscale.max_workers" = {
+      type       = "range"
+      minValue   = 0
+      maxValue   = 4
+      isOptional = true
     }
   }
   create_team_policies  = contains(var.cluster_policies, "team")

@@ -1,4 +1,9 @@
 locals {
+  drivers = { for driver in setintersection(fileset("${path.module}/drivers", "**"), var.drivers) : driver => {
+    source = driver
+    type   = dirname(driver)
+  } }
+
   base_policy_overrides = {
     node_type_id = {
       type         = "allowlist"

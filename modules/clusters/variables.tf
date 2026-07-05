@@ -26,10 +26,14 @@ variable "clusters" {
     init_scripts = optional(list(object({
       type        = string # s3, volume, or workspace
       destination = string
-    })))
+    })), [])
+    libraries = optional(list(object({
+      type        = string
+      destination = string
+    })), [])
     permissions = optional(list(object({
       group     = string
       privilege = string
-    })))
+    })), [])
   }))
 }

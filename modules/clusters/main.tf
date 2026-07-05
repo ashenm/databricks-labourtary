@@ -36,6 +36,22 @@ resource "databricks_cluster" "clusters" {
     }
   }
 
+  dynamic "library" {
+    for_each = toset([for library in each.value.libraries : library.destination if library.type == "jar"])
+
+    content {
+      jar = library.key
+    }
+  }
+
+  dynamic "library" {
+    for_each = toset([for library in each.value.libraries : library.destination if library.type == "whl"])
+
+    content {
+      whl = library.key
+    }
+  }
+
   aws_attributes {
     instance_profile_arn = each.value.instance_profile_arn
     availability         = coalesce(each.value.availability, "ON_DEMAND")

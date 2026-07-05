@@ -7,3 +7,17 @@ variable "cluster_policies" {
     error_message = "cluster_policies must be a combination of values 'user' and 'team'"
   }
 }
+
+variable "drivers" {
+  type    = list(string)
+  default = ["jar/ojdbc11-23.26.2.0.0.jar"]
+}
+
+variable "owner" {
+  type    = string
+  default = "one-env-laboratory-sudoers"
+}
+
+variable "volume_path" {
+  type = string
+}

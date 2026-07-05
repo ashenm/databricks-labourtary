@@ -5,6 +5,10 @@ locals {
   catalogs = { for key, value in lookup(local.configs, "catalogs", {}) : key => merge(value, {
     storage_root = lookup(value, "storage", null) != null ? "${trimsuffix(module.storages.storage_locations[value.storage].url, "/")}/default" : null
   }) }
+
+  clusters = { for key, value in lookup(local.configs, "clusters", {}) : key => merge(value, {
+    libraries = concat(lookup(value, "libraries", []), [for idx, value in module.baselines.drivers : { type = value.type, destination = value.path }])
+  }) }
 }
 
 module "storages" {
@@ -34,7 +38,7 @@ module "volumes" {
 
 module "clusters" {
   source      = "../../../modules/clusters"
-  clusters    = lookup(local.configs, "clusters", {})
+  clusters    = local.clusters
   name_prefix = var.name_prefix
   depends_on  = [databricks_artifact_allowlist.init]
 }
@@ -42,6 +46,7 @@ module "clusters" {
 module "baselines" {
   source           = "../../../modules/baselines"
   cluster_policies = ["team", "user"]
+  volume_path      = module.volumes.volumes["drivers"].volume_path
 }
 
 resource "databricks_workspace_conf" "main" {
@@ -75,32 +80,6 @@ resource "databricks_disable_legacy_access_setting" "main" {
 resource "databricks_file" "init" {
   source = "${path.module}/artifacts/init.sh"
   path   = "${module.volumes.volumes["probes"].volume_path}/init.sh"
-}
-
-resource "databricks_artifact_allowlist" "init" {
-  artifact_type = "INIT_SCRIPT"
-
-  dynamic "artifact_matcher" {
-    for_each = jsondecode(data.external.artifact_allowlist_matchers.result.matchers)
-
-    content {
-      artifact   = artifact_matcher.value.artifact
-      match_type = artifact_matcher.value.match_type
-    }
-  }
-}
-
-data "external" "artifact_allowlist_matchers" {
-  program = ["python3", "${path.module}/../../../externals/get-artifact-allowlist.py"]
-  query = {
-    host   = data.databricks_current_user.current.workspace_url
-    prefix = dirname(module.volumes.volumes["probes"].volume_path)
-    paths = jsonencode([
-      module.volumes.volumes["probes"].volume_path,
-      module.volumes.volumes["rovers"].volume_path
-    ])
-  }
-  depends_on = [module.volumes]
 }
 
 data "databricks_group" "readers" {

@@ -61,3 +61,13 @@ volumes:
       - group: one-env-laboratory-readers
         privileges: [READ_VOLUME]
     owner: one-env-laboratory-sudoers
+  drivers:
+    catalog_name: triangulum
+    schema_name: main
+    force_destroy: true
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [READ_VOLUME]
+    owner: one-env-laboratory-sudoers

@@ -44,6 +44,8 @@ locals {
   __count_team_policies = local.create_team_policies ? 1 : 0
   create_user_policies  = contains(var.cluster_policies, "user")
   __count_user_policies = local.create_user_policies ? 1 : 0
+
+  sql_starter_warehouse_acls = jsondecode(data.external.starter_warehouse_permissions.result.acls)
 }
 
 resource "databricks_cluster_policy" "job_compute_team" {
@@ -72,3 +74,5 @@ resource "databricks_cluster_policy" "job_compute_user" {
   }))
   max_clusters_per_user = 1
 }
+
+data "databricks_current_user" "current" {}

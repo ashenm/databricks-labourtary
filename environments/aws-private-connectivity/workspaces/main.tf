@@ -129,6 +129,13 @@ resource "databricks_disable_legacy_access_setting" "main" {
   }
 }
 
+resource "databricks_compliance_security_profile_workspace_setting" "main" {
+  compliance_security_profile_workspace {
+    is_enabled           = true
+    compliance_standards = ["NONE"]
+  }
+}
+
 data "databricks_group" "readers" {
   display_name = "one-env-laboratory-readers"
 }

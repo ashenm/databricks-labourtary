@@ -15,7 +15,7 @@ resource "databricks_permissions" "tokens" {
 }
 
 resource "databricks_directory" "users" {
-  path = "/Workspace/Users/hewagallage.gunaratne@databricks.com/.bundles/common"
+  path = "/Workspace/Users/mail@ashenm.dev/.bundles/common"
 }
 
 resource "databricks_permissions" "users" {

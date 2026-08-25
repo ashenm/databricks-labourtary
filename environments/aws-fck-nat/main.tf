@@ -5,7 +5,6 @@ locals {
 provider "aws" {
   default_tags {
     tags = {
-      Owner       = "hewagallage.gunaratne@databricks.com"
       Project     = upper(var.project)
       Environment = upper(var.environment)
     }

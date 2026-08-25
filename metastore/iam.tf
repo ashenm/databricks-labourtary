@@ -22,5 +22,5 @@ resource "databricks_group_member" "service_principal" {
 }
 
 data "databricks_user" "sudoer" {
-  user_name = "hewagallage.gunaratne@databricks.com"
+  user_name = "mail@ashenm.dev"
 }

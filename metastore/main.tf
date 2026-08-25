@@ -2,9 +2,7 @@ provider "aws" {
   region = var.aws_region
 
   default_tags {
-    tags = {
-      Owner = "hewagallage.gunaratne@databricks.com"
-    }
+    tags = {}
   }
 }
 

@@ -21,6 +21,11 @@ resource "databricks_metastore" "main" {
   delta_sharing_organization_name                   = "one-env-laboratory"
 }
 
+resource "databricks_mws_network_connectivity_config" "main" {
+  name   = "metastore"
+  region = var.aws_region
+}
+
 data "external" "service_principal" {
   program = ["python3", "${path.module}/externals/get-current-service-principal.py"]
   query   = {}

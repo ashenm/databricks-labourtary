@@ -34,6 +34,10 @@ resource "databricks_share" "opensharings" {
       data_object_type = object.value.type
       comment          = object.value.comment
 
+      content = contains([
+        "NOTEBOOK_FILE"
+      ], object.value.type) ? object.value.content : null
+
       # applicable only for table-like data objects
       shared_as = contains([
         "FOREIGN_TABLE",

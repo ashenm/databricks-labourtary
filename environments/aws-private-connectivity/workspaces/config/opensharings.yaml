@@ -1,0 +1,13 @@
+recipients:
+  auxiliary:
+    name: one-env-laboratory-auxiliary
+    authentication_type: DATABRICKS
+    data_recipient_global_metastore_id: "aws:ap-southeast-2:9e1a584d-862f-44ed-a799-ac02008c6442"
+    owner: one-env-laboratory-sudoers
+
+shares:
+  kepler:
+    recipients:
+      - auxiliary
+    management: external
+    owner: one-env-laboratory-sudoers

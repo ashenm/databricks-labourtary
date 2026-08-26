@@ -20,6 +20,7 @@ variable "shares" {
       type    = string # https://registry.terraform.io/providers/databricks/databricks/latest/docs/resources/share#object-configuration-block
       alias   = optional(string)
       comment = optional(string)
+      content = optional(string)
     })), {})
     recipients = optional(list(string), [])
   }))

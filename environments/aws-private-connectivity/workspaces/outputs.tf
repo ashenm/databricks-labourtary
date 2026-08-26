@@ -10,6 +10,10 @@ output "clusters" {
   value = module.clusters
 }
 
+output "opensharings" {
+  value = module.opensharings
+}
+
 output "warehouses" {
   value = module.warehouses
 }

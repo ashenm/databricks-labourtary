@@ -18,7 +18,18 @@ resource "databricks_metastore" "main" {
 
   delta_sharing_scope                               = "INTERNAL_AND_EXTERNAL"
   delta_sharing_recipient_token_lifetime_in_seconds = 2592000
-  delta_sharing_organization_name                   = "one-env-laboratory"
+  delta_sharing_organization_name                   = var.metastore_name
+}
+
+resource "databricks_metastore" "auxiliary" {
+  name          = "${var.metastore_name}-auxiliary"
+  force_destroy = true
+  region        = var.aws_region_auxiliary
+  owner         = databricks_group.sudoers.display_name
+
+  delta_sharing_scope                               = "INTERNAL_AND_EXTERNAL"
+  delta_sharing_recipient_token_lifetime_in_seconds = 2592000
+  delta_sharing_organization_name                   = "${var.metastore_name}-auxiliary"
 }
 
 resource "databricks_mws_network_connectivity_config" "main" {

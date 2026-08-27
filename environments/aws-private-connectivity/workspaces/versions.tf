@@ -6,6 +6,9 @@ terraform {
     databricks = {
       source = "databricks/databricks"
     }
+    external = {
+      source = "hashicorp/external"
+    }
   }
   required_version = ">= 1.10.0"
 }

@@ -40,6 +40,15 @@ schemas:
       - group: one-env-laboratory-readers
         privileges: [USE_SCHEMA, SELECT]
     owner: one-env-laboratory-sudoers
+  ai:
+    catalog_name: triangulum
+    force_destroy: true
+    permissions:
+      - group: one-env-laboratory-sudoers
+        privileges: [ALL_PRIVILEGES]
+      - group: one-env-laboratory-readers
+        privileges: [USE_SCHEMA, SELECT]
+    owner: one-env-laboratory-sudoers
   stars:
     catalog_name: triangulum
     force_destroy: true

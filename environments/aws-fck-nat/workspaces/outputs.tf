@@ -9,3 +9,11 @@ output "catalogs" {
 output "clusters" {
   value = module.clusters
 }
+
+output "schemas" {
+  value = module.schemas
+}
+
+output "warehouses" {
+  value = module.warehouses
+}

@@ -14,6 +14,10 @@ output "opensharings" {
   value = module.opensharings
 }
 
+output "schemas" {
+  value = module.schemas
+}
+
 output "warehouses" {
   value = module.warehouses
 }

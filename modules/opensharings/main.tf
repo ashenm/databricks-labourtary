@@ -34,6 +34,9 @@ resource "databricks_share" "opensharings" {
       data_object_type = object.value.type
       comment          = object.value.comment
 
+      cdf_enabled                 = each.value.history == "cdf" ? true : null
+      history_data_sharing_status = each.value.history == "history" ? "ENABLED" : null
+
       content = contains([
         "NOTEBOOK_FILE"
       ], object.value.type) ? object.value.content : null

@@ -15,7 +15,6 @@ resource "databricks_mws_network_connectivity_config" "main" {
 }
 
 resource "databricks_mws_ncc_private_endpoint_rule" "apis" {
-  account_id                     = var.databricks_account_id
   network_connectivity_config_id = databricks_mws_network_connectivity_config.main.network_connectivity_config_id
   domain_names                   = [local.app_service_name]
   endpoint_service               = aws_vpc_endpoint_service.main.service_name
@@ -35,7 +34,6 @@ resource "databricks_mws_ncc_private_endpoint_rule" "main" {
   # "${data.aws_partition.current.reverse_dns_prefix}.${data.aws_region.current.region}.s3"
   #
   endpoint_service               = "com.amazonaws.ap-southeast-1.s3"
-  account_id                     = var.databricks_account_id
   network_connectivity_config_id = databricks_mws_network_connectivity_config.main.network_connectivity_config_id
   resource_names                 = [for resource in data.aws_resourcegroupstaggingapi_resources.buckets.resource_tag_mapping_list : replace(resource.resource_arn, "arn:aws:s3:::", "")]
 }
